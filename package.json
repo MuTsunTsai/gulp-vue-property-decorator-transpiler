@@ -1,0 +1,43 @@
+{
+  "name": "gulp-vue-property-decorator-transpiler",
+  "version": "1.0.0",
+  "description": "To be used with vue-property-decorator-transpiler.",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MuTsunTsai/gulp-vue-property-decorator-transpiler.git"
+  },
+  "keywords": [
+    "gulp",
+    "vue",
+    "decorator",
+    "component",
+    "typescript"
+  ],
+  "author": "Mu-Tsun Tsai",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MuTsunTsai/gulp-vue-property-decorator-transpiler/issues"
+  },
+  "homepage": "https://github.com/MuTsunTsai/gulp-vue-property-decorator-transpiler#readme",
+  "dependencies": {
+    "@types/node": "^12.6.8",
+    "cheerio": "^1.0.0-rc.3",
+    "htmlparser2": "^3.10.1",
+    "js-beautify": "^1.10.1",
+    "relative": "^3.0.2",
+    "terser": "^4.1.2",
+    "through2": "^3.0.1",
+    "vinyl": "^2.2.0",
+    "vue-property-decorator-transpiler": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/cheerio": "^0.22.12",
+    "@types/js-beautify": "^1.8.1",
+    "@types/through2": "^2.0.34",
+    "@types/vinyl": "^2.0.3"
+  }
+}
