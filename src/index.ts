@@ -9,8 +9,8 @@ import relative = require('relative');
 import terser = require('terser');
 import transpiler = require('vue-property-decorator-transpiler');
 
-var scripts: string[] = [];
-var templates: Cheerio[] = [];
+var scripts: string[];
+var templates: Cheerio[];
 var vpdOption: vpdOptions;
 
 var cheerioOptions: CheerioOptionsInterface = {
@@ -29,6 +29,9 @@ function parseVue(filename: string) {
 }
 
 function transform(this: stream.Transform, chunk: File, enc: BufferEncoding, callback: through.TransformCallback) {
+	scripts = [];
+	templates = [];
+
 	if(chunk.isNull()) return callback(null, chunk);
 	if(chunk.isStream()) {
 		console.log('Cannot use streamed files');
