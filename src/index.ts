@@ -16,7 +16,8 @@ var vpdOption: vpdOptions;
 var cheerioOptions: CheerioOptionsInterface = {
 	normalizeWhitespace: false,
 	xmlMode: false,
-	decodeEntities: false
+	decodeEntities: false,
+	recognizeSelfClosing: true
 };
 
 function parseVue(filename: string) {
@@ -65,8 +66,15 @@ function transform(this: stream.Transform, chunk: File, enc: BufferEncoding, cal
 
 	// Minify
 	if(vpdOption.minifyScript) {
-		script = terser.minify(script).code;
-		fs.writeFileSync(scriptName, script);
+		let filename = scriptName.substr(scriptName.lastIndexOf("/") + 1);
+		let result = terser.minify(script, {
+			sourceMap: {
+				filename: filename,
+				url: filename + ".map"
+			}
+		});
+		fs.writeFileSync(scriptName, result.code);
+		fs.writeFileSync(scriptName + ".map", result.map);
 	}
 
 	return callback(null, chunk);

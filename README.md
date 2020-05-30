@@ -1,6 +1,6 @@
-# Vue Property Decorator Transpiler
+# gulp-vue-property-decorator-transpiler
 
-To be used with vue-property-decorator-transpiler.
+To be used with [vue-property-decorator-transpiler](https://www.npmjs.com/package/vue-property-decorator-transpiler).
 
 It will pack all .vue files in a project with an initial .html file and .js file, and generate only one .html and one .js file.
 
