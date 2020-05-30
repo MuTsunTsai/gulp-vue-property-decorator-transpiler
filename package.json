@@ -1,6 +1,6 @@
 {
 	"name": "gulp-vue-property-decorator-transpiler",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"description": "To be used with vue-property-decorator-transpiler.",
 	"main": "lib/index.js",
 	"scripts": {
