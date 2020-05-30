@@ -67,12 +67,13 @@ function transform(this: stream.Transform, chunk: File, enc: BufferEncoding, cal
 	// Minify
 	if(vpdOption.minifyScript) {
 		let filename = scriptName.substr(scriptName.lastIndexOf("/") + 1);
-		let result = terser.minify(script, {
-			sourceMap: {
-				filename: filename,
-				url: filename + ".map"
-			}
-		});
+		let orgName = filename.replace(/\.min.js$/, ".js");
+        let result = terser.minify({[orgName]: script}, {
+            sourceMap: {
+                filename: filename,
+                url: filename + ".map"
+            }
+        });
 		fs.writeFileSync(scriptName, result.code);
 		fs.writeFileSync(scriptName + ".map", result.map);
 	}
