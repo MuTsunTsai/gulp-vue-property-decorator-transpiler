@@ -20,13 +20,18 @@ var cheerioOptions: CheerioOptionsInterface = {
 	recognizeSelfClosing: true
 };
 
-function parseVue(filename: string) {
-	if(!filename.endsWith(".vue")) return;
-	var vueFile = fs.readFileSync(filename);
-	var vue = cheerio.load(vueFile.toString(), cheerioOptions);
-	var result = transpiler(vue("script").html());
-	templates.push(vue("template").attr("id", result.template));
-	scripts.push(result.script);
+function parseVue(path: string) {
+	let l = fs.lstatSync(path);
+	if(l.isDirectory()) {
+		fs.readdirSync(path).forEach(f => parseVue(path + "/" + f));
+	} else if(l.isFile()) {
+		if(!path.endsWith(".vue")) return;
+		var vueFile = fs.readFileSync(path);
+		var vue = cheerio.load(vueFile.toString(), cheerioOptions);
+		var result = transpiler(vue("script").html());
+		templates.push(vue("template").attr("id", result.template));
+		scripts.push(result.script);
+	}
 }
 
 function transform(this: stream.Transform, chunk: File, enc: BufferEncoding, callback: through.TransformCallback) {
@@ -40,8 +45,7 @@ function transform(this: stream.Transform, chunk: File, enc: BufferEncoding, cal
 	}
 
 	// Process .vue files
-	let filenames = fs.readdirSync(vpdOption.componentsDir);
-	filenames.forEach(filename => parseVue(vpdOption.componentsDir + "/" + filename));
+	parseVue(vpdOption.componentsDir);
 
 	// Decide final script filename
 	let scriptName = vpdOption.minifyScript ? vpdOption.outputScript.replace(/\.js$/, ".min.js") : vpdOption.outputScript;
@@ -68,12 +72,12 @@ function transform(this: stream.Transform, chunk: File, enc: BufferEncoding, cal
 	if(vpdOption.minifyScript) {
 		let filename = scriptName.substr(scriptName.lastIndexOf("/") + 1);
 		let orgName = filename.replace(/\.min.js$/, ".js");
-        let result = terser.minify({[orgName]: script}, {
-            sourceMap: {
-                filename: filename,
-                url: filename + ".map"
-            }
-        });
+		let result = terser.minify({ [orgName]: script }, {
+			sourceMap: {
+				filename: filename,
+				url: filename + ".map"
+			}
+		});
 		fs.writeFileSync(scriptName, result.code);
 		fs.writeFileSync(scriptName + ".map", result.map);
 	}
